@@ -23,4 +23,60 @@ router.post("/customer", (req, res) => {
     });
 });
 
+//GET localhost:3000/customer
+router.get("/customer", (req, res) => {
+  //req.body
+  if (!req.query.email) {
+    return res.status(400).send("Missing Url parameter:email");
+  }
+  CustomerModel.findOne({
+    email: req.query.email
+  })
+    .then(doc => {
+      res.json(doc);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
+//PUT localhost:3000/customer
+router.put("/customer", (req, res) => {
+  //req.body
+  if (!req.query.email) {
+    return res.status(400).send("Missing Url parameter:email");
+  }
+  CustomerModel.findOneAndUpdate(
+    {
+      email: req.query.email
+    },
+    req.body,
+    {
+      new: true
+    }
+  )
+    .then(doc => {
+      res.json(doc);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
+//DELETE localhost:3000/customer
+router.delete("/customer", (req, res) => {
+  //req.body
+  if (!req.query.email) {
+    return res.status(400).send("Missing Url parameter:email");
+  }
+  CustomerModel.findOneAndRemove({
+    email: req.query.email
+  })
+    .then(doc => {
+      res.json(doc);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
 module.exports = router;
